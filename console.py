@@ -11,6 +11,25 @@ class HBNBCommand(cmd.Cmd):
     """
     """Class attribute prompt defined"""
     prompt = "(hbnb) "
+    classes = {
+        'BaseModel': BaseModel()
+        }
+
+    @staticmethod
+    def typecaster(str):
+        """Type casts the attribute passed on
+        console"""
+        str = str[1:-1]
+        try:
+            float = float(str)
+            try:
+                num = int(str)
+                return(num)
+            except ValueError:
+                num = float(str)
+                return num
+        except Exception:
+            return str
 
     def do_quit(self, line):
         """Quit command to exit the program"""
@@ -25,9 +44,10 @@ class HBNBCommand(cmd.Cmd):
         """ Create command that creates an instance of BaseModel,
             saves it and prints the id
         """
+        arg = line.split()
         if len(line) == 0:
             print("** class name missing **")
-        elif line != "BaseModel":
+        elif arg[0] not in self.classes.keys():
             print("** class doesn't exist **")
         else:
             inst = BaseModel()
@@ -41,7 +61,7 @@ class HBNBCommand(cmd.Cmd):
         arg = line.split()
         if len(arg) == 0:
             print("** class name missing **")
-        elif arg[0] != "BaseModel":
+        elif arg[0] not in self.classes.keys():
             print("** class doesn't exist **")
         elif len(arg) != 2:
             print("** instance id missing **")
@@ -60,7 +80,7 @@ class HBNBCommand(cmd.Cmd):
         arg = line.split()
         if len(arg) == 0:
             print("** class name missing **")
-        elif arg[0] != "BaseModel":
+        elif arg[0] not in self.classes.keys():
             print("** class doesn't exist **")
         elif len(arg) != 2:
             print("** instance id missing **")
@@ -72,6 +92,45 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
             else:
                 print("** no instance found **")
+
+    def do_all(self, line):
+        """Prints all string representation of
+        all instances based or not on the class name"""
+        arg = line.split()
+        if len(arg) > 0 and arg[0] not in self.classes.keys():
+            print("** class doesn't exist **")
+        else:
+            list = []
+            all_objects = storage.all()
+            for key in all_objects.keys():
+                list.append(BaseModel.__str__(all_objects[key]))
+            print(list)
+
+    def do_update(self, line):
+        """Updates an instance based on the class
+        name and id by adding or updating attribute"""
+        arg = line.split()
+        all_objects = storage.all()
+        if len(arg) == 0:
+            print("** class name missing **")
+        elif arg[0] not in self.classes.keys():
+            print("** class doesn't exist **")
+        elif len(arg) < 2:
+            print("** instance id missing **")
+        else:
+            all_objects = storage.all()
+            key = "{}.{}".format(arg[0], arg[1])
+            if key not in all_objects.keys():
+                print("** no instance found **")
+            elif len(arg) < 3:
+                print("** attribute name missing **")
+            elif len(arg) < 4:
+                print("** value missing **")
+            else:
+                """attr = type(getattr(all_objects[key], arg[2]))"""
+                trimmed = HBNBCommand.typecaster(arg[3])
+                setattr(all_objects[key], arg[2], trimmed)
+                storage.save()
 
 
 if __name__ == '__main__':
