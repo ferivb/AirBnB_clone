@@ -11,25 +11,23 @@ class HBNBCommand(cmd.Cmd):
     """
     """Class attribute prompt defined"""
     prompt = "(hbnb) "
+    """Dictionary with all the classes and their inits"""
     classes = {
         'BaseModel': BaseModel()
         }
 
     @staticmethod
-    def typecaster(str):
+    def typecaster(attr):
         """Type casts the attribute passed on
         console"""
-        str = str[1:-1]
-        try:
-            float = float(str)
+        attr = attr.strip('\"')
+        if attr.isdecimal():
+            return int(attr)
+        else:
             try:
-                num = int(str)
-                return(num)
+                return float(attr)
             except ValueError:
-                num = float(str)
-                return num
-        except Exception:
-            return str
+                return str(attr)
 
     def do_quit(self, line):
         """Quit command to exit the program"""
