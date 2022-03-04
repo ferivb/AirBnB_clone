@@ -2,6 +2,7 @@
 import cmd
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+from models.user import User
 from models import storage
 
 
@@ -13,7 +14,8 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     """Dictionary with all the classes and their inits"""
     classes = {
-        'BaseModel': BaseModel()
+        'BaseModel': BaseModel(),
+        'User': User()
         }
 
     @staticmethod
