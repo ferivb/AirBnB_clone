@@ -38,12 +38,12 @@ class BaseModel:
         """Returns a dictionary containing all
         keys/values of __dict__ of the instance"""
         temp_dict = self.__dict__.copy()
-        temp_dict["__class__"] = __class__.__name__
+        temp_dict["__class__"] = self.__class__.__name__
         temp_dict["created_at"] = self.created_at.isoformat()
         temp_dict["updated_at"] = self.updated_at.isoformat()
         return temp_dict
 
     def __str__(self):
         """Prints [<class name>] (<self.id>) <self.__dict__>"""
-        c_name = __class__.__name__
+        c_name = self.__class__.__name__
         return "[{}] ({}) {}".format(c_name, self.id, self.__dict__)
