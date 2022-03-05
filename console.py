@@ -42,7 +42,7 @@ class HBNBCommand(cmd.Cmd):
             except ValueError:
                 return str(attr)
 
-    def empty_line(self):
+    def emptyline(self):
         "handler for the empty line"
         pass
 
