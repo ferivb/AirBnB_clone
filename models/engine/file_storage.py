@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""File Storage class module"""
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State

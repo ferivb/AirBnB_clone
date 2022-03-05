@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Console class module"""
 import cmd
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage

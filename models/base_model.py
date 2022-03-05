@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Base Model class module"""
 from time import strptime
 from unicodedata import name
 import uuid
