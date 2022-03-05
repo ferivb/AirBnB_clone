@@ -15,9 +15,10 @@ class HBNBCommand(cmd.Cmd):
     """ class that implements a command interpreter
         with quit, help methods and a custumize prompt
     """
-    """Class attribute prompt defined"""
+
+    """Class attributes:
+    prompt and a classes dictionary"""
     prompt = "(hbnb) "
-    """Dictionary with all the classes and their inits"""
     classes = {
         'BaseModel': BaseModel,
         'User': User,
@@ -41,6 +42,10 @@ class HBNBCommand(cmd.Cmd):
             except ValueError:
                 return str(attr)
 
+    def empty_line(self):
+        "handler for the empty line"
+        pass
+
     def do_quit(self, line):
         """Quit command to exit the program"""
         return True
@@ -51,9 +56,8 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, line):
-        """ Create command that creates an instance of BaseModel,
-            saves it and prints the id
-        """
+        """Create command that creates an instance of BaseModel,
+        saves it and prints the id"""
         arg = line.split()
         if len(line) == 0:
             print("** class name missing **")
@@ -65,9 +69,8 @@ class HBNBCommand(cmd.Cmd):
             inst.save()
 
     def do_show(self, line):
-        """ Show command that prints the string representation
-            of an instance based on the class name and id
-        """
+        """Show command that prints the string representation
+        of an instance based on the class name and id"""
         arg = line.split()
         if len(arg) == 0:
             print("** class name missing **")
@@ -84,9 +87,8 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     def do_destroy(self, line):
-        """ Delete command that deletes an instance based on the class name
-            and id
-        """
+        """Delete command that deletes an instance based on the class name
+        and id"""
         arg = line.split()
         if len(arg) == 0:
             print("** class name missing **")
