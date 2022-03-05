@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/python3
 import cmd
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
