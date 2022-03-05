@@ -3,6 +3,11 @@ import cmd
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models import storage
 
 
@@ -14,8 +19,13 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     """Dictionary with all the classes and their inits"""
     classes = {
-        'BaseModel': BaseModel(),
-        'User': User()
+        'BaseModel': BaseModel,
+        'User': User,
+        'State': State,
+        'City': City,
+        'Amenity': Amenity,
+        'Place': Place,
+        'Review': Review,
         }
 
     @staticmethod
@@ -50,7 +60,7 @@ class HBNBCommand(cmd.Cmd):
         elif arg[0] not in self.classes.keys():
             print("** class doesn't exist **")
         else:
-            inst = BaseModel()
+            inst = self.classes[arg[0]]()
             print(inst.id)
             inst.save()
 
@@ -97,14 +107,22 @@ class HBNBCommand(cmd.Cmd):
         """Prints all string representation of
         all instances based or not on the class name"""
         arg = line.split()
-        if len(arg) > 0 and arg[0] not in self.classes.keys():
-            print("** class doesn't exist **")
-        else:
+        if len(arg) == 0:
             list = []
             all_objects = storage.all()
             for key in all_objects.keys():
                 list.append(BaseModel.__str__(all_objects[key]))
             print(list)
+        else:
+            if len(arg) > 0 and arg[0] not in self.classes.keys():
+                print("** class doesn't exist **")
+            else:
+                list = []
+                all_objects = storage.all()
+                for key in all_objects.keys():
+                    if type(all_objects[key]) == self.classes[arg[0]]:
+                        list.append(BaseModel.__str__(all_objects[key]))
+                print(list)
 
     def do_update(self, line):
         """Updates an instance based on the class
