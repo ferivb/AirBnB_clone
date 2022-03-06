@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Console class module"""
 import cmd
+import re
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models.user import User
@@ -78,7 +79,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif arg[0] not in self.classes.keys():
             print("** class doesn't exist **")
-        elif len(arg) != 2:
+        elif len(arg) < 2:
             print("** instance id missing **")
         else:
             all_objects = storage.all()
@@ -96,7 +97,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         elif arg[0] not in self.classes.keys():
             print("** class doesn't exist **")
-        elif len(arg) != 2:
+        elif len(arg) < 2:
             print("** instance id missing **")
         else:
             all_objects = storage.all()
@@ -153,6 +154,24 @@ class HBNBCommand(cmd.Cmd):
                 trimmed = HBNBCommand.typecaster(arg[3])
                 setattr(all_objects[key], arg[2], trimmed)
                 storage.save()
+
+    def default(self, arg):
+        """Alternative command usage in the mode <class name>.<command>"""
+        commands = {
+            "all": self.do_all,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "update": self.do_update,
+        }
+        arg_list = re.split('[.\",() ]+', arg)
+        if arg_list[1] not in commands.keys():
+            print("** Unknown command try help **")
+        else:
+            method = commands[arg_list[1]]
+            arg_list[1] = arg_list[0]
+            del arg_list[0]
+            line = ' '.join(arg_list)
+            method(line)
 
 
 if __name__ == '__main__':
