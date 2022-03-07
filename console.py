@@ -129,6 +129,25 @@ class HBNBCommand(cmd.Cmd):
                         list.append(BaseModel.__str__(all_objects[key]))
                 print(list)
 
+    def do_count(self, line):
+        """Counts the amount of instances"""
+        arg = line.split()
+        count = 0
+        if len(arg) == 0:
+            all_objects = storage.all()
+            for key in all_objects.keys():
+                count = count + 1
+            print(count)
+        else:
+            if len(arg) > 0 and arg[0] not in self.classes.keys():
+                print("** class doesn't exist **")
+            else:
+                all_objects = storage.all()
+                for key in all_objects.keys():
+                    if type(all_objects[key]) == self.classes[arg[0]]:
+                        count = count + 1
+                print(count)
+
     def do_update(self, line):
         """Updates an instance based on the class
         name and id by adding or updating attribute"""
@@ -159,6 +178,7 @@ class HBNBCommand(cmd.Cmd):
         """Alternative command usage in the mode <class name>.<command>"""
         commands = {
             "all": self.do_all,
+            "count": self.do_count,
             "show": self.do_show,
             "destroy": self.do_destroy,
             "update": self.do_update,
